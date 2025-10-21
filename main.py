@@ -1,5 +1,6 @@
 import flet as ft
 from alert import AlertManager
+from automobile import Automobile
 from autonoleggio import Autonoleggio
 
 FILE_AUTO = "automobili.csv"
@@ -37,6 +38,24 @@ def main(page: ft.Page):
 
     # Tutti i TextField per le info necessarie per aggiungere una nuova automobile (marca, modello, anno, contatore posti)
     # TODO
+    input_marca = ft.TextField(value='Marca')
+    input_modello = ft.TextField(value='Modello')
+    input_anno = ft.TextField(value='Anno')
+
+
+    btnMinus = ft.IconButton(icon=ft.Icons.REMOVE,
+                             icon_color="red",
+                             icon_size=24)#, on_click=handleRemove
+    btnAdd = ft.IconButton(icon=ft.Icons.ADD,
+                           icon_color="green",
+                           icon_size=24)#, on_click=handleAdd
+    txtOut = ft.TextField(width=50,
+                          disabled=True,
+                          value=0,
+                          border_color="green",
+                          text_align=ft.TextAlign.CENTER)
+    input_aggiunta = ft.ElevatedButton('Aggiungi automobile')
+
 
     # --- FUNZIONI APP ---
     def aggiorna_lista_auto():
@@ -58,6 +77,10 @@ def main(page: ft.Page):
         page.update()
 
     # Handlers per la gestione dei bottoni utili all'inserimento di una nuova auto
+    '''
+    def nuova_auto():
+        nuovaAuto = autonoleggio.aggiungi_automobile(input_marca, input_modello, input_anno, txtOut)
+    '''
     # TODO
 
     # --- EVENTI ---
@@ -66,6 +89,7 @@ def main(page: ft.Page):
 
     # Bottoni per la gestione dell'inserimento di una nuova auto
     # TODO
+
 
     # --- LAYOUT ---
     page.add(
@@ -83,6 +107,14 @@ def main(page: ft.Page):
                alignment=ft.MainAxisAlignment.CENTER),
 
         # Sezione 3
+        ft.Divider(),
+        ft.Text("Aggiungi nuova automobile", size=20),
+        ft.Row(spacing=20,
+               controls=[input_marca, input_modello, input_anno, btnMinus, txtOut, btnAdd ],
+               alignment=ft.MainAxisAlignment.CENTER),
+        ft.Row(spacing=20,
+               controls=[input_aggiunta],
+               alignment=ft.MainAxisAlignment.CENTER),
         # TODO
 
         # Sezione 4
