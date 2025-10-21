@@ -37,10 +37,12 @@ def main(page: ft.Page):
     lista_auto = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
 
     # Tutti i TextField per le info necessarie per aggiungere una nuova automobile (marca, modello, anno, contatore posti)
-    # TODO
-    input_marca = ft.TextField(value='Marca')
-    input_modello = ft.TextField(value='Modello')
-    input_anno = ft.TextField(value='Anno')
+    input_marca = ft.TextField(value='Marca',
+                               width=280)
+    input_modello = ft.TextField(value='Modello',
+                                 width=280)
+    input_anno = ft.TextField(value='Anno',
+                              width=280)
 
 
     btnMinus = ft.IconButton(icon=ft.Icons.REMOVE,
@@ -51,7 +53,7 @@ def main(page: ft.Page):
                            icon_size=24)#, on_click=handleAdd
     txtOut = ft.TextField(width=50,
                           disabled=True,
-                          value=0,
+                          value='0',
                           border_color="green",
                           text_align=ft.TextAlign.CENTER)
     input_aggiunta = ft.ElevatedButton('Aggiungi automobile')
@@ -77,10 +79,19 @@ def main(page: ft.Page):
         page.update()
 
     # Handlers per la gestione dei bottoni utili all'inserimento di una nuova auto
-    '''
-    def nuova_auto():
-        nuovaAuto = autonoleggio.aggiungi_automobile(input_marca, input_modello, input_anno, txtOut)
-    '''
+    #hendlers per il counter
+    def decrementa_posti(e):
+        valore = int(txtOut.value or 0)
+        txtOut.value = str(max(0, valore - 1))  # evita negativi
+        txtOut.update()
+
+    def incrementa_posti(e):
+        valore = int(txtOut.value)
+        txtOut.value = str(valore + 1)
+        txtOut.update()
+
+    #hendler per l'inserimento auto
+    #def aggiungi_automobili(e):
     # TODO
 
     # --- EVENTI ---
@@ -88,6 +99,8 @@ def main(page: ft.Page):
     pulsante_conferma_responsabile = ft.ElevatedButton("Conferma", on_click=conferma_responsabile)
 
     # Bottoni per la gestione dell'inserimento di una nuova auto
+    btnMinus.on_click = decrementa_posti
+    btnAdd.on_click = incrementa_posti
     # TODO
 
 
