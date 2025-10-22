@@ -37,25 +37,25 @@ def main(page: ft.Page):
     lista_auto = ft.ListView(expand=True, spacing=5, padding=10, auto_scroll=True)
 
     # Tutti i TextField per le info necessarie per aggiungere una nuova automobile (marca, modello, anno, contatore posti)
-    input_marca = ft.TextField(value='Marca',
+    input_marca = ft.TextField(label='Marca',
                                width=280)
-    input_modello = ft.TextField(value='Modello',
+    input_modello = ft.TextField(label='Modello',
                                  width=280)
-    input_anno = ft.TextField(value='Anno',
+    input_anno = ft.TextField(label='Anno',
                               width=280)
-
 
     btnMinus = ft.IconButton(icon=ft.Icons.REMOVE,
                              icon_color="red",
-                             icon_size=24)#, on_click=handleRemove
+                             icon_size=24)
     btnAdd = ft.IconButton(icon=ft.Icons.ADD,
                            icon_color="green",
-                           icon_size=24)#, on_click=handleAdd
+                           icon_size=24)
     txtOut = ft.TextField(width=50,
                           disabled=True,
                           value='0',
                           border_color="green",
                           text_align=ft.TextAlign.CENTER)
+
     input_aggiunta = ft.ElevatedButton('Aggiungi automobile')
 
 
@@ -91,7 +91,37 @@ def main(page: ft.Page):
         txtOut.update()
 
     #hendler per l'inserimento auto
-    #def aggiungi_automobili(e):
+    def aggiungi_automobili(e):
+        marca = (input_marca.value or '').strip()     #'or' e strip() per evitare spazi o campi vuoti
+        modello = (input_modello.value or '').strip()
+        anno_str = (input_anno.value or '').strip()
+        posti_str = (txtOut.value or '0').strip()
+        #controllo sull'inserimento
+        if not marca or not modello or not anno_str:
+            alert.show_alert("❌ Compila marca, modello e anno.")
+            return
+
+        try:
+            anno = int(anno_str)
+            posti = max(1, int(posti_str)) #con il numero '1' si dice 'almeno un posto
+            if anno <= 0 or posti <= 0:
+                raise ValueError
+        except ValueError:
+            alert.show_alert("❌ Inserire valori numerici validi per anno e posti.")
+            return
+        # Creo l'oggetto Automobile (adattato ai parametri del costruttore)
+        autonoleggio.aggiungi_automobile(marca, modello, anno, posti)
+
+        # Reset parametri
+        input_marca.value = ''
+        input_modello.value = ''
+        input_anno.value = ''
+        txtOut.value = '0'
+        page.update()
+
+        #aggiorno la lista
+        aggiorna_lista_auto()
+
     # TODO
 
     # --- EVENTI ---
@@ -101,6 +131,7 @@ def main(page: ft.Page):
     # Bottoni per la gestione dell'inserimento di una nuova auto
     btnMinus.on_click = decrementa_posti
     btnAdd.on_click = incrementa_posti
+    input_aggiunta.on_click=aggiungi_automobili
     # TODO
 
 
